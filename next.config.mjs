@@ -8,7 +8,7 @@ const config = {
   trailingSlash: false,
   assetPrefix: "/docs",
   images: {
-    domains: ["lh3.googleusercontent.com"], // Add other domains as needed
+    domains: ["lh3.googleusercontent.com"],
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -16,7 +16,6 @@ const config = {
   async headers() {
     return [
       {
-        // Handle both with and without trailing slash
         source: "/api/search/:path*",
         headers: [
           { key: "Access-Control-Allow-Origin", value: "*" },
@@ -31,8 +30,21 @@ const config = {
         ],
       },
       {
-        // Handle the specific search endpoint without trailing slash
         source: "/api/search",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+        ],
+      },
+      {
+        source: "/api/search/",
         headers: [
           { key: "Access-Control-Allow-Origin", value: "*" },
           {
@@ -61,12 +73,12 @@ const config = {
       },
     ];
   },
-  async rewrites() {
+  async redirects() {
     return [
       {
-        // Handle trailing slash for API routes
         source: "/api/search/",
         destination: "/api/search",
+        permanent: true,
       },
     ];
   },
