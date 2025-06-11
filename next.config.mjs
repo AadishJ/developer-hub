@@ -61,6 +61,15 @@ const config = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        // Handle trailing slash for API routes
+        source: "/api/search/",
+        destination: "/api/search",
+      },
+    ];
+  },
 };
 
 export default withMDX(config);
